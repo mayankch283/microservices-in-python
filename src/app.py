@@ -1,6 +1,12 @@
 from flask import Flask, jsonify, render_template
+import socket
 
 app = Flask(__name__)
+
+def fetchDetails():
+    hostname = socket.gethostname()
+    ip = socket.gethostbyname(hostname)
+    return hostname, ip
 
 @app.route("/")
 def greet():
@@ -14,7 +20,8 @@ def health():
 
 @app.route("/details")
 def details():
-    return render_template("index.html")
+    hostname, ip = fetchDetails()
+    return render_template("index.html", HOSTNAME=hostname, IP=ip)
     
 if __name__ == "__main__":
     app.run()
